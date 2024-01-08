@@ -18,11 +18,11 @@ const pool = mysql.createPool({
   connectionLimit: 10,
 });
 
-app.get("/api/locations", (req, res) => {
-  pool.query("SELECT * FROM locations", (error, results) => {
+app.get("/api/Aninmals", (req, res) => {
+  pool.query("SELECT * FROM Animals", (error, results) => {
     if (error) {
       console.error("Error fetching data:", error);
-      res.status(500).json({ error: "Internal Server Error!" });
+      res.status(500).json({ error: "Internal Server Error!!" });
     } else {
       res.json(results);
     }
@@ -41,3 +41,4 @@ server = app
 // docker ps -a + docker stop (container id)
 // docker-compose up -d -> (docker-compose exec app sh -> ls -la -> exit) -> docker-compose down
 // docker-compose logs
+// mysql -h mydb.tamk.fi -u dranpe -p dbdranpe2
