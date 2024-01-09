@@ -2,7 +2,7 @@
 # Use the Alpine Linux-based which will have node 20 already installed
 FROM node:20-alpine
 
-# Inform Docker that the container will listen on port 3000
+# Inform Docker that the container will listen on port 8080
 EXPOSE 8080
 
 # Copy all files from the current directory to the /app directory inside the container
@@ -13,6 +13,9 @@ WORKDIR /app
 
 # Run the npm install command to install Node.js dependencies for the application
 RUN npm install
+# Build the Vite app
+
+RUN npm run build
 
 # Set the default command for the container to start the Node.js application using index.js
 CMD ["node", "index.js"]

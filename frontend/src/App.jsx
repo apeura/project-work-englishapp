@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <div>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
+        <a href="https://react.dev">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
