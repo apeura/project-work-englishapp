@@ -13,9 +13,6 @@ WORKDIR /app
 
 # Run the npm install command to install Node.js dependencies for the application
 RUN npm install
-# Build the Vite app
-
-RUN npm run build
 
 # Set the default command for the container to start the Node.js application using index.js
 CMD ["node", "index.js"]
