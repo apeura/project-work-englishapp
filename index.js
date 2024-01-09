@@ -5,10 +5,15 @@ const express = require("express");
 const mysql = require("mysql");
 const dotenv = require("dotenv");
 
+// Helmet helps secure Express apps by setting HTTP response headers.
+const helmet = require("helmet");
+
 dotenv.config();
 
 const app = express();
 const port = 8080;
+
+app.use(helmet());
 
 const pool = mysql.createPool({
   host: process.env.host,
@@ -32,7 +37,7 @@ app.get("/api/Aninmals", (req, res) => {
 server = app
   .listen(port, () => {
     console.log(`SERVER: listening on port ${port}.`);
-    console.log(process.env); // ADD THIS!!
+    console.log(process.env); 
   })
   .on("error", (err) => {
     console.error("SERVER: Error starting server: ", err);
