@@ -5,15 +5,11 @@ const express = require("express");
 const mysql = require("mysql");
 const dotenv = require("dotenv");
 
-// Helmet helps secure Express apps by setting HTTP response headers.
-import helmet from "helmet";
 
 dotenv.config();
 
 const app = express();
 const port = 8080;
-
-app.use(helmet());
 
 const pool = mysql.createPool({
   host: process.env.host,
@@ -49,7 +45,7 @@ server = app
     console.error("SERVER: Error starting server: ", err);
     process.exit(1);
   });
-  
+
 // docker ps -a + docker stop (container id)
 // docker-compose up -d -> (docker-compose exec app sh -> ls -la -> exit) -> docker-compose down
 // docker-compose logs
