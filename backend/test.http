@@ -1,0 +1,4 @@
+get http://localhost:8080/api/Animals
+###
+get http://localhost:8080/api/Colors
+###

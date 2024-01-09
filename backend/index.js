@@ -1,13 +1,8 @@
 // npm install express mysql cors dotenv
-// connect to mysql
 
 const express = require("express");
+const cors = require("cors");
 const mysql = require("mysql");
-const dotenv = require("dotenv");
-
-
-dotenv.config();
-
 const app = express();
 const port = 8080;
 
@@ -17,15 +12,17 @@ const pool = mysql.createPool({
   password: process.env.password,
   database: process.env.database,
   connectionLimit: 10,
+  // troubleshooting 'UNSUPPORTED_AUTH_METHOD'
+  // authentication plugin to handle authentication via password during connection handshake
+  authPlugins: {
+    mysql_clear_password: () => () => Buffer.from(process.env.password + "\0"),
+  },
 });
-app.use((req, res, next) => {
-  res.setHeader(
-    "Content-Security-Policy",
-    "default-src https://learn-english-2qxb.onrender.com 'nonce-dwzkqezo_-ND54J0'; style-src 'unsafe-inline'"
-  );
-  next();
-});
-app.get("/api/Aninmals", (req, res) => {
+
+app.use(express.static("./frontend/dist"));
+app.use(cors());
+
+app.get("/api/Animals", (req, res) => {
   pool.query("SELECT * FROM Animals", (error, results) => {
     if (error) {
       console.error("Error fetching data:", error);
@@ -36,10 +33,20 @@ app.get("/api/Aninmals", (req, res) => {
   });
 });
 
+app.get("/api/Colors", (req, res) => {
+  pool.query("SELECT * FROM Colors", (error, results) => {
+    if (error) {
+      console.error("Error fetching data:", error);
+      res.status(500).json({ error: "Internal Server Error!!" });
+    } else {
+      res.json(results);
+    }
+  });
+});
 server = app
   .listen(port, () => {
     console.log(`SERVER: listening on port ${port}.`);
-    console.log(process.env); 
+    console.log(process.env);
   })
   .on("error", (err) => {
     console.error("SERVER: Error starting server: ", err);
