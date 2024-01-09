@@ -1,28 +1,34 @@
 // npm install express mysql cors dotenv
 // connect to mysql
 
-const express = require("express");
-const mysql = require("mysql");
-const dotenv = require("dotenv");
+import express from "express";
+import { createPool } from "mysql";
+import { config } from "dotenv";
 
 // Helmet helps secure Express apps by setting HTTP response headers.
-const helmet = require("helmet");
+import helmet from "helmet";
 
-dotenv.config();
+config();
 
 const app = express();
 const port = 8080;
 
 app.use(helmet());
 
-const pool = mysql.createPool({
+const pool = createPool({
   host: process.env.host,
   user: process.env.user,
   password: process.env.password,
   database: process.env.database,
   connectionLimit: 10,
 });
-
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src https://learn-english-2qxb.onrender.com 'nonce-dwzkqezo_-ND54J0'; style-src 'unsafe-inline'"
+  );
+  next();
+});
 app.get("/api/Aninmals", (req, res) => {
   pool.query("SELECT * FROM Animals", (error, results) => {
     if (error) {
