@@ -1,5 +1,4 @@
 // npm install express mysql cors dotenv
-
 const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql");
@@ -22,6 +21,7 @@ const pool = mysql.createPool({
 app.use(express.static("./frontend/dist"));
 app.use(cors());
 
+// Get Animals
 app.get("/api/Animals", (req, res) => {
   pool.query("SELECT * FROM Animals", (error, results) => {
     if (error) {
@@ -32,7 +32,7 @@ app.get("/api/Animals", (req, res) => {
     }
   });
 });
-
+// Get Colors
 app.get("/api/Colors", (req, res) => {
   pool.query("SELECT * FROM Colors", (error, results) => {
     if (error) {
@@ -43,6 +43,18 @@ app.get("/api/Colors", (req, res) => {
     }
   });
 });
+// Get Locations
+app.get("/api/Locations", (req, res) => {
+  pool.query("SELECT * FROM Locations", (error, results) => {
+    if (error) {
+      console.error("Error fetching data:", error);
+      res.status(500).json({ error: "Internal Server Error!!" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 server = app
   .listen(port, () => {
     console.log(`SERVER: listening on port ${port}.`);
@@ -57,3 +69,5 @@ server = app
 // docker-compose up -d -> (docker-compose exec app sh -> ls -la -> exit) -> docker-compose down
 // docker-compose logs
 // mysql -h mydb.tamk.fi -u dranpe -p dbdranpe2
+
+// npm run start
