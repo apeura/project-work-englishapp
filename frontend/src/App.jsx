@@ -1,36 +1,30 @@
-/* import { useState } from "react"; */
-import reactLogo from "./assets/react.svg";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import Home from "./pages/Home";
+import Admin from "./pages/Admin";
+import Info from "./pages/Info";
 import "./App.css";
 
-function App() {
-/*   const [count, setCount] = useState(0); */
-
+const App = () => {
   return (
-    <>
+    <Router>
       <div>
-        <a href="https://react.dev">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <nav>
+            <p>
+              <Link to="/">Play </Link>
+              <span className="material-symbols-outlined"> raven </span>{" "}
+              <Link to="/admin">Admin </Link>{" "}
+              <span className="material-symbols-outlined"> raven </span>{" "}
+              <Link to="/info">Info</Link>
+            </p>{" "}
+        </nav>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/info" element={<Info />} />
+        </Routes>
       </div>
-      <h1>Learn English!</h1>
-      <div className="card">
-        {/*         <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button> */}
-        <p>Start learning etc, admin?</p>
-      </div>
-      <p className="grey">
-        word thing here?word thing here? word thing here? word thing here? word
-        thing here? word thing here? word thing here? word thing here? word
-        thing here? word thing here? word tword thing here? word thing here?
-        word thing here? word thing here? word thing here? word thing here? word
-        thing here? word thing here? word thing here? word thing here? word
-        thing here? word thing here? word thing here? word thing here? word
-        thing here? ing here? word thing here? word thing here? word thing here?
-        word thing here? word thing here? word thing here? word thing here?{" "}
-      </p>
-    </>
+    </Router>
   );
-}
+};
 
 export default App;
