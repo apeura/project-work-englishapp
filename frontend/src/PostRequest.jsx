@@ -1,4 +1,4 @@
-import React from "react";
+/* import React from "react";
 
 class PostRequest extends React.Component {
   constructor(props) {
@@ -33,3 +33,4 @@ class PostRequest extends React.Component {
 }
 
 export { PostRequest };
+ */

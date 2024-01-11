@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "../App.css";/* 
 import { addNewWordPair } from "../../../backend/util.js"; */
-import { PostRequest } from "../PostRequest";
-function Admin() {
+/* import { PostRequest } from "../PostRequest";
+ */function Admin() {
   const [selectedTable, setSelectedTable] = useState();
   const [submitted, setSubmitted] = useState(false); // submitted, for score display
   const [engWord, setEngWord] = useState("");
@@ -63,8 +63,8 @@ function Admin() {
         </button>
       </div>
       <p className="grey">
-        <PostRequest />
-        word thing here?word thing here? word thing here? word thing here? word{" "}
+{/*         <PostRequest />
+ */}        word thing here?word thing here? word thing here? word thing here? word{" "}
       </p>
     </>
   );
