@@ -1,6 +1,6 @@
 import { useState } from "react";
-import "../App.css";
-import { addNewWordPair } from "../../../backend/util.js";
+import "../App.css";/* 
+import { addNewWordPair } from "../../../backend/util.js"; */
 import { PostRequest } from "../PostRequest";
 function Admin() {
   const [selectedTable, setSelectedTable] = useState();
@@ -15,8 +15,8 @@ function Admin() {
   };
 
   const handleAddNewWordPair = () => {
-    console.log("Adding new word pair:", engWord, fiWord);
-    addNewWordPair(selectedTable, engWord, fiWord);
+    console.log("Adding new word pair:", engWord, fiWord);/* 
+    addNewWordPair(selectedTable, engWord, fiWord); */
 
     // close admin panel
     //setSubmitted(false);

@@ -1,4 +1,4 @@
-// backend stuff
+/* // backend stuff
 export const addNewWordPair = async (table, user_eng_word, user_fi_word) => {
   console.log(`table ${table} eng ${user_eng_word} fi ${user_fi_word}`)
   //console.log(`http://localhost:8080/api/${table}`);
@@ -20,4 +20,4 @@ export const addNewWordPair = async (table, user_eng_word, user_fi_word) => {
     console.error("Error adding new word pair:", error);
     throw error;
   }
-};
+}; */
