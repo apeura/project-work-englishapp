@@ -18,6 +18,7 @@ const pool = mysql.createPool({
   },
 });
 
+app.use(express.json());
 app.use(express.static("./frontend/dist"));
 app.use(cors());
 
@@ -43,6 +44,7 @@ app.get("/api/Colors", (req, res) => {
     }
   });
 });
+
 // Get Locations
 app.get("/api/Locations", (req, res) => {
   pool.query("SELECT * FROM Locations", (error, results) => {
@@ -53,6 +55,48 @@ app.get("/api/Locations", (req, res) => {
       res.json(results);
     }
   });
+});
+// Get Jobs
+app.get("/api/Jobs", (req, res) => {
+  pool.query("SELECT * FROM Jobs", (error, results) => {
+    if (error) {
+      console.error("Error fetching data:", error);
+      res.status(500).json({ error: "Internal Server Error!!" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+// Get Foods
+app.get("/api/Foods", (req, res) => {
+  pool.query("SELECT * FROM Foods", (error, results) => {
+    if (error) {
+      console.error("Error fetching data:", error);
+      res.status(500).json({ error: "Internal Server Error!!" });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+// Add new word pair to selected Table
+app.post("/api/Jobs", (req, res) => {
+  const { eng_word, fi_word } = req.body;
+  console.log("reqbody: ", req.body);
+  const sql = "INSERT INTO Jobs (eng_word, fi_word) VALUES (?, ?)";
+
+  pool.query(sql, [eng_word, fi_word], (error, results) => {
+    if (error) {
+      console.error("Error inserting data:", error);
+      res.status(500).json({ error: "Internal Server Error!!" });
+    } else {
+      console.log("Data inserted successfully");
+      res
+        .status(200)
+        .json({ message: "Data received and inserted successfully" });
+    }
+  });
+  res.send("Data received successfully");
 });
 
 server = app
