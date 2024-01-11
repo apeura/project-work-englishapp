@@ -1,21 +1,58 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  /*   max-width: 1280px;
+  margin: 0 auto; */
+  width: 100%;
+  margin: auto;
   padding: 2rem;
   text-align: center;
 }
+body {
+  background: rgb(183, 207, 185);
+  background: linear-gradient(
+    180deg,
+    rgb(183, 207, 207) 0%,
+    rgb(185, 199, 195) 20%,
+    rgba(136, 235, 255, 0) 100%
+  );
+}
+button {
+  margin: 3px;
+}
+button.admin {
+  font-family:Arial, Helvetica, sans-serif;
+  margin: 12px;
+  box-shadow: 2px 2px 8px #888888;
+}
+nav {
+  top: 0;
+  left: 0;
+  width: 100%;
+  position: absolute;
+}
+
+h2 {
+  margin-bottom: 0;
+  padding: 0;
+}
+.header {
+  background-color: #f0f0f0;
+  max-width: 500px;
+  margin: auto;
+  border-radius: 0 0 20px 20px;
+  padding: 0;
+}
+.header h1 {
+  text-shadow: 3px 3px #ffffff;
+}
 
 .logo {
-  height: 6em;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  z-index: 0;
+  position: absolute;
+  top: 3em;
+  left: 50%;
 }
 
 @keyframes logo-spin {
@@ -28,7 +65,7 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(1) .logo {
+  .logo {
     animation: logo-spin infinite 20s linear;
   }
 }
@@ -39,4 +76,113 @@
 
 .grey {
   color: #888;
+}
+.material-symbols-outlined {
+  color: rgb(151, 145, 136);
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+ul {
+  font-family: "Jura", sans-serif;
+}
+
+.tag {
+  background-color: #2ecc71;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 12px;
+  margin: 1px;
+}
+.tag:hover {
+  background-color: #18a753;
+}
+.tag.clicked {
+  color: red;
+  background-color: #303030;
+}
+
+/* table styling */
+table {
+  background-color: #e2e2e2;
+  border-radius: 10px 10px 0 0;
+  overflow: hidden;
+  padding: 3px;
+  margin: auto;
+}
+/*table head*/
+thead {
+  font-family: "Jura", sans-serif;
+  /*   background-color: #18a753; */
+}
+
+/*table body*/
+tbody {
+  background-color: #e2e2e2;
+}
+/*table data cell*/
+td {
+  width: 100%;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  font-size: 16px;
+  resize: none;
+}
+td:nth-child(1) {
+  background-color: #f8f8f8;
+}
+.score.hidden {
+  visibility: hidden;
+  font-family: "Jura", sans-serif;
+}
+.score {
+  visibility: visible;
+  font-family: "Jura", sans-serif;
+}
+
+.submitBox {
+  background-color: #e2e2e2;
+  border-radius: 0 0 10px 10px;
+  padding: 5px;
+}
+
+.tables {
+  justify-content: center;
+  content: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.singleTable {
+  margin: 30px;
+  /* box-shadow: 2px 2px 8px #888888; */
+}
+
+.adminPanel.hidden {
+  visibility: hidden;
+}
+.adminPanel {
+  visibility: visible;
+  font-family: "Jura", sans-serif;
+}
+
+/*Alternating colors for even tables*/
+.singleTable:nth-child(even) table {
+  background-color: #2ecc71;
+  color: white;
+}
+.singleTable:nth-child(even) td:nth-child(1) {
+  background-color: #0d8d42;
+  color: white;
+}
+.singleTable:nth-child(even) tbody:nth-child(2) {
+  background-color: #2ecc71;
+}
+
+.singleTable:nth-child(even) .submitBox {
+  background-color: #2ecc71;
+}
+.singleTable:nth-child(even) button {
+  color: white;
+  background-color: #0d8d42;
 }
