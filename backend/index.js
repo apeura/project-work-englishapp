@@ -38,7 +38,7 @@ app.get("/api/:table", (req, res) => {
 // Get 1
 app.get("/api/:table/:id", (req, res) => {
   const table = req.params.table;
-    const id = req.params.id;
+  const id = req.params.id;
 
   pool.query(`SELECT * FROM ${table} WHERE id= ?`, [id], (error, results) => {
     if (error) {
@@ -105,19 +105,56 @@ app.delete("/api/:table/:id", (req, res) => {
   });
 });
 
-server = app
-  .listen(port, () => {
-    console.log(`SERVER: listening on port ${port}.`);
-    console.log(process.env);
-  })
-  .on("error", (err) => {
-    console.error("SERVER: Error starting server: ", err);
+let server = undefined;
+connection.connect((err) => {
+  if (err) {
+    console.error("Error connecting to MySQL:", err);
     process.exit(1);
-  });
+  } else {
+    console.log("MySQL: connection successful.");
+    server = app
+      .listen(port, () => {
+        console.log(`SERVER: listening on port ${port}`);
+      })
+      .on("error", (err) => {
+        console.error("Error starting server:", err);
+        process.exit(1);
+      });
+    process.on("SIGTERM", gracefulShutdown);
+    process.on("SIGINT", gracefulShutdown);
+  }
+});
 
-// docker ps -a + docker stop (container id)
-// docker-compose up -d -> (docker-compose exec app sh -> ls -la -> exit) -> docker-compose down
-// docker-compose logs
-// mysql -h mydb.tamk.fi -u dranpe -p dbdranpe2
-
-// npm run start
+const gracefulShutdown = () => {
+  console.log("SERVER: Starting graceful shutdown...");
+  if (server) {
+    console.log("SERVER: Server was opened, so we can close it...");
+    server.close((err) => {
+      if (err) {
+        console.log("There was some error with closing server");
+        process.exit(1);
+      } else {
+        console.log("SERVER: stopped");
+        if (connection) {
+          console.log("MYSQL: Starting graceful shutdown...");
+          connection.end((err) => {
+            if (err) {
+              console.log("There was some error with closing mysql");
+              process.exit(1);
+            } else {
+              console.log("MYSQL: stopped");
+              process.exit(0);
+            }
+          });
+        } else {
+          console.log("MYSQL: No mysql connection open");
+        }
+      }
+    });
+    console.log("APPLICATION: Shutdown complete.");
+    process.exit(0);
+  } else {
+    console.log("No server to close.");
+    process.exit(0);
+  }
+};
