@@ -1,13 +1,23 @@
-//version without router, troubleshooting
-import { useState } from "react";
-import Home from "./pages/Home";
+import { useState, useEffect } from "react";
 import Admin from "./pages/Admin";
+import Home from "./pages/Home";
 import Info from "./pages/Info";
 import "./App.css";
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState("home");
 
+  // render current page based on which page you're on
+  useEffect(() => {
+    const currentPath = window.location.pathname.replace("/", "");
+    setCurrentPage(currentPath || "home");
+  }, []); // Empty dependency array to run this effect only once on mount
+
+  const handleNavLinkClick = (page) => {
+    setCurrentPage(page);
+    window.history.pushState(null, null, `/${page}`);
+  };
+  
   const renderPage = () => {
     switch (currentPage) {
       case "home":
@@ -16,8 +26,6 @@ const App = () => {
         return <Admin />;
       case "info":
         return <Info />;
-      default:
-        return null; 
     }
   };
 
@@ -25,9 +33,17 @@ const App = () => {
     <div>
       <nav>
         <p>
-          <button onClick={() => setCurrentPage("home")}>Play raven</button>
-          <button onClick={() => setCurrentPage("admin")}>Admin raven</button>
-          <button onClick={() => setCurrentPage("info")}>Info</button>
+          <span className="navLink" onClick={() => handleNavLinkClick("home")}>
+            Play
+          </span>
+          <span className="material-symbols-outlined"> raven </span>
+          <span className="navLink" onClick={() => handleNavLinkClick("admin")}>
+            Admin
+          </span>
+          <span className="material-symbols-outlined"> raven </span>
+          <span className="navLink" onClick={() => handleNavLinkClick("info")}>
+            Info
+          </span>
         </p>
       </nav>
       {renderPage()}
@@ -35,36 +51,4 @@ const App = () => {
   );
 };
 
-export default App; 
-
-/* import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-import Home from "./pages/Home";
-import Admin from "./pages/Admin";
-import Info from "./pages/Info";
-import "./App.css";
-
-const App = () => {
-  return (
-    <Router>
-      <div>
-        <nav>
-            <p>
-              <Link to="/">Play </Link>
-              <span className="material-symbols-outlined"> raven </span>{" "}
-              <Link to="/admin">Admin </Link>{" "}
-              <span className="material-symbols-outlined"> raven </span>{" "}
-              <Link to="/info">Info</Link>
-            </p>{" "}
-        </nav>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/info" element={<Info />} />
-        </Routes>
-      </div>
-    </Router>
-  );
-};
-
 export default App;
- */
