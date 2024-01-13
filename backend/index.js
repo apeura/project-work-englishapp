@@ -23,8 +23,9 @@ app.use(express.static("./frontend/dist"));
 app.use(cors());
 
 // Get Animals
-app.get("/api/Animals", (req, res) => {
-  pool.query("SELECT * FROM Animals", (error, results) => {
+app.get("/api/:table", (req, res) => {
+  const table = req.params.table;
+  pool.query(`SELECT * FROM ${table}`, (error, results) => {
     if (error) {
       console.error("Error fetching data:", error);
       res.status(500).json({ error: "Internal Server Error!!" });
@@ -32,7 +33,7 @@ app.get("/api/Animals", (req, res) => {
       res.json(results);
     }
   });
-});
+}); /* 
 // Get Colors
 app.get("/api/Colors", (req, res) => {
   pool.query("SELECT * FROM Colors", (error, results) => {
@@ -77,26 +78,26 @@ app.get("/api/Foods", (req, res) => {
       res.json(results);
     }
   });
-});
+}); */
 
 // Add new word pair to selected Table
-app.post("/api/Jobs", (req, res) => {
-  const { eng_word, fi_word } = req.body;
-  console.log("reqbody: ", req.body);
-  const sql = "INSERT INTO Jobs (eng_word, fi_word) VALUES (?, ?)";
+app.post("/api/:table", (req, res) => {
 
+  const table = req.params.table;
+  const { eng_word, fi_word } = req.body;
+  const sql = `INSERT INTO ${table} (eng_word, fi_word) VALUES (?, ?)`;
+  
   pool.query(sql, [eng_word, fi_word], (error, results) => {
     if (error) {
       console.error("Error inserting data:", error);
-      res.status(500).json({ error: "Internal Server Error!!" });
+      return res.status(500).json({ error: "Internal Server Error!!" });
     } else {
       console.log("Data inserted successfully");
-      res
+      return res
         .status(200)
         .json({ message: "Data received and inserted successfully" });
     }
   });
-  res.send("Data received successfully");
 });
 
 server = app
