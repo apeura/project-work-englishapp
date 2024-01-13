@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(express.static("./frontend/dist"));
 app.use(cors());
 
-// Get Animals
+// Get
 app.get("/api/:table", (req, res) => {
   const table = req.params.table;
   pool.query(`SELECT * FROM ${table}`, (error, results) => {
@@ -33,10 +33,14 @@ app.get("/api/:table", (req, res) => {
       res.json(results);
     }
   });
-}); /* 
-// Get Colors
-app.get("/api/Colors", (req, res) => {
-  pool.query("SELECT * FROM Colors", (error, results) => {
+});
+
+// Get 1
+app.get("/api/:table/:id", (req, res) => {
+  const table = req.params.table;
+    const id = req.params.id;
+
+  pool.query(`SELECT * FROM ${table} WHERE id= ?`, [id], (error, results) => {
     if (error) {
       console.error("Error fetching data:", error);
       res.status(500).json({ error: "Internal Server Error!!" });
@@ -46,47 +50,12 @@ app.get("/api/Colors", (req, res) => {
   });
 });
 
-// Get Locations
-app.get("/api/Locations", (req, res) => {
-  pool.query("SELECT * FROM Locations", (error, results) => {
-    if (error) {
-      console.error("Error fetching data:", error);
-      res.status(500).json({ error: "Internal Server Error!!" });
-    } else {
-      res.json(results);
-    }
-  });
-});
-// Get Jobs
-app.get("/api/Jobs", (req, res) => {
-  pool.query("SELECT * FROM Jobs", (error, results) => {
-    if (error) {
-      console.error("Error fetching data:", error);
-      res.status(500).json({ error: "Internal Server Error!!" });
-    } else {
-      res.json(results);
-    }
-  });
-});
-// Get Foods
-app.get("/api/Foods", (req, res) => {
-  pool.query("SELECT * FROM Foods", (error, results) => {
-    if (error) {
-      console.error("Error fetching data:", error);
-      res.status(500).json({ error: "Internal Server Error!!" });
-    } else {
-      res.json(results);
-    }
-  });
-}); */
-
-// Add new word pair to selected Table
+// Post
 app.post("/api/:table", (req, res) => {
-
   const table = req.params.table;
   const { eng_word, fi_word } = req.body;
   const sql = `INSERT INTO ${table} (eng_word, fi_word) VALUES (?, ?)`;
-  
+
   pool.query(sql, [eng_word, fi_word], (error, results) => {
     if (error) {
       console.error("Error inserting data:", error);
@@ -96,6 +65,42 @@ app.post("/api/:table", (req, res) => {
       return res
         .status(200)
         .json({ message: "Data received and inserted successfully" });
+    }
+  });
+});
+
+// Put
+app.put("/api/:table/:id", (req, res) => {
+  const table = req.params.table;
+  const id = req.params.id;
+  const { eng_word, fi_word } = req.body;
+  const sql = `UPDATE  ${table} SET eng_word = ?, fi_word = ? WHERE id = ?`;
+
+  pool.query(sql, [eng_word, fi_word, id], (error, results) => {
+    if (error) {
+      console.error("Error inserting data:", error);
+      return res.status(500).json({ error: "Internal Server Error!!" });
+    } else {
+      console.log("Data inserted successfully");
+      return res
+        .status(200)
+        .json({ message: "Data received and inserted successfully" });
+    }
+  });
+});
+
+// Delete
+app.delete("/api/:table/:id", (req, res) => {
+  const table = req.params.table;
+  const id = req.params.id;
+
+  pool.query(`DELETE FROM ${table} WHERE id = ?`, [id], (error, results) => {
+    if (error) {
+      console.error("Error deleting data:", error);
+      return res.status(500).json({ error: "Internal Server Error!!" });
+    } else {
+      console.log("Data deleting successfully");
+      return res.status(200).json({ message: "Data deleted successfully" });
     }
   });
 });
