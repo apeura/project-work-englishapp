@@ -153,7 +153,7 @@ function Admin() {
       <div className="card">
         <p>
           Here you can add, delete or update wordpairs for learning purposes.
-          <br></br> Choose which table you'll be handling.
+          <br></br> Choose which table you`&apos;`ll be handling.
         </p>
         <button onClick={() => handleChoice("Animals")}>Animals</button>
         <button onClick={() => handleChoice("Colors")}>Colors</button>
@@ -169,7 +169,6 @@ function Admin() {
         <button onClick={() => handleActionChoice("Add")}>Add</button>
         <button onClick={() => handleActionChoice("Edit")}>Edit</button>
         <button onClick={() => handleActionChoice("Delete")}>Delete</button>
-
         <div className={`addPanel ${action === "Add" ? "" : "hidden"}`}>
           <h3>Given words will be added to {selectedTable}: </h3>
           <div>
@@ -197,12 +196,12 @@ function Admin() {
             Add
           </button>
         </div>{" "}
-
         <div className={`editPanel ${action === "Edit" ? "" : "hidden"}`}>
           <div className="flex">
             <div>
               <h3>
-                Click on the table to select which word pair you'd like to edit.
+                Click on the table to select which word pair you`&apos;`d like
+                to edit.
               </h3>
               <input type="text" placeholder={getIdOrPlaceholder()} disabled />
               <input
@@ -236,7 +235,6 @@ function Admin() {
             />
           </div>
         </div>
-
         <div className={`delPanel ${action === "Delete" ? "" : "hidden"}`}>
           <div className="flex">
             <div>
