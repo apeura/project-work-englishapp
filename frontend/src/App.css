@@ -18,10 +18,19 @@ body {
 button {
   margin: 3px;
 }
+
 button.admin {
-  font-family:Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   margin: 12px;
   box-shadow: 2px 2px 8px #888888;
+}
+
+.navLink {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #817d7c;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 12px;
 }
 nav {
   top: 0;
@@ -109,6 +118,9 @@ table {
   padding: 3px;
   margin: auto;
 }
+table.admin {
+  max-width: 300px;
+}
 /*table head*/
 thead {
   font-family: "Jura", sans-serif;
@@ -158,12 +170,23 @@ td:nth-child(1) {
   /* box-shadow: 2px 2px 8px #888888; */
 }
 
-.adminPanel.hidden {
-  visibility: hidden;
+.adminPanel.hidden,
+.delPanel.hidden,
+.addPanel.hidden,
+.editPanel.hidden {
+  display: none;
 }
+
 .adminPanel {
-  visibility: visible;
+  display: block;
   font-family: "Jura", sans-serif;
+}
+
+.editPanel, .delPanel {
+  display: flex;
+}
+.flex {
+  flex: auto;
 }
 
 /*Alternating colors for even tables*/
@@ -185,4 +208,11 @@ td:nth-child(1) {
 .singleTable:nth-child(even) button {
   color: white;
   background-color: #0d8d42;
+}
+
+
+@media (max-width: 600px) {
+  .editPanel, .delPanel {
+    flex-direction: column; /* Stack elements vertically */
+  }
 }
