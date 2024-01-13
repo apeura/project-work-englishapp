@@ -11,11 +11,15 @@ const pool = mysql.createPool({
   password: process.env.password,
   database: process.env.database,
   connectionLimit: 10,
-  // troubleshooting 'UNSUPPORTED_AUTH_METHOD'
-  // authentication plugin to handle authentication via password during connection handshake
+  // AI solution
   authPlugins: {
     mysql_clear_password: () => () => Buffer.from(process.env.password + "\0"),
   },
+});
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  next();
 });
 
 app.use(express.json());
@@ -105,56 +109,19 @@ app.delete("/api/:table/:id", (req, res) => {
   });
 });
 
-let server = undefined;
-connection.connect((err) => {
-  if (err) {
-    console.error("Error connecting to MySQL:", err);
-    process.exit(1);
-  } else {
-    console.log("MySQL: connection successful.");
-    server = app
-      .listen(port, () => {
-        console.log(`SERVER: listening on port ${port}`);
-      })
-      .on("error", (err) => {
-        console.error("Error starting server:", err);
-        process.exit(1);
-      });
-    process.on("SIGTERM", gracefulShutdown);
-    process.on("SIGINT", gracefulShutdown);
-  }
-});
-
-const gracefulShutdown = () => {
-  console.log("SERVER: Starting graceful shutdown...");
-  if (server) {
-    console.log("SERVER: Server was opened, so we can close it...");
-    server.close((err) => {
-      if (err) {
-        console.log("There was some error with closing server");
-        process.exit(1);
-      } else {
-        console.log("SERVER: stopped");
-        if (connection) {
-          console.log("MYSQL: Starting graceful shutdown...");
-          connection.end((err) => {
-            if (err) {
-              console.log("There was some error with closing mysql");
-              process.exit(1);
-            } else {
-              console.log("MYSQL: stopped");
-              process.exit(0);
-            }
-          });
-        } else {
-          console.log("MYSQL: No mysql connection open");
-        }
-      }
+if (pool) {
+  console.log("MySQL: connection successful.");
+  server = app
+    .listen(port, () => {
+      console.log(`SERVER: listening on port ${port}`);
+    })
+    .on("error", (err) => {
+      console.error("Error starting server:", err);
+      process.exit(1);
     });
-    console.log("APPLICATION: Shutdown complete.");
-    process.exit(0);
-  } else {
-    console.log("No server to close.");
-    process.exit(0);
-  }
-};
+} else {
+  console.error("Error connecting to MySQL:", err);
+  process.exit(1);
+}
+
+
