@@ -1,6 +1,4 @@
 #root {
-  /*   max-width: 1280px;
-  margin: 0 auto; */
   width: 100%;
   margin: auto;
   padding: 2rem;
@@ -15,6 +13,7 @@ body {
     rgba(136, 235, 255, 0) 100%
   );
 }
+
 button {
   margin: 3px;
 }
@@ -27,33 +26,29 @@ button.admin {
 
 .navLink {
   font-family: Arial, Helvetica, sans-serif;
-  color: #817d7c;
+  color: #5c5857;
   cursor: pointer;
   overflow: hidden;
   padding: 12px;
 }
-nav {
-  top: 0;
-  left: 0;
-  width: 100%;
-  position: absolute;
+
+.material-symbols-outlined {
+  color: rgb(151, 145, 136);
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 
 h2 {
   margin-bottom: 0;
   padding: 0;
 }
-.header {
-  background-color: #f0f0f0;
-  max-width: 500px;
-  margin: auto;
-  border-radius: 0 0 20px 20px;
-  padding: 0;
-}
-.header h1 {
-  text-shadow: 3px 3px #ffffff;
+
+h3 {
+  margin: 0;
 }
 
+.bold {
+  font-weight: bold;
+}
 .logo {
   padding: 1.5em;
   will-change: filter;
@@ -86,10 +81,6 @@ h2 {
 .grey {
   color: #888;
 }
-.material-symbols-outlined {
-  color: rgb(151, 145, 136);
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-}
 
 ul {
   font-family: "Jura", sans-serif;
@@ -106,8 +97,9 @@ ul {
   background-color: #18a753;
 }
 .tag.clicked {
-  color: red;
-  background-color: #303030;
+  color: rgb(255, 255, 255);
+  background-color: #118340;
+  outline: rgb(0, 0, 0) auto 2px;
 }
 
 /* table styling */
@@ -120,6 +112,7 @@ table {
 }
 table.admin {
   max-width: 300px;
+  cursor: pointer;
 }
 /*table head*/
 thead {
@@ -180,13 +173,29 @@ td:nth-child(1) {
 .adminPanel {
   display: block;
   font-family: "Jura", sans-serif;
+  max-width: fit-content;
+  margin: auto;
+  padding: 10px;
 }
 
-.editPanel, .delPanel {
+.editPanel,
+.delPanel,
+.infoPanel {
   display: flex;
+  padding: 10px;
+  margin: auto;
+  justify-content: center;
 }
+.infoPanel table {
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 2px 1px 5px #888888;
+  width: 280px;
+}
+
 .flex {
   flex: auto;
+  margin: 16px;
 }
 
 /*Alternating colors for even tables*/
@@ -210,9 +219,9 @@ td:nth-child(1) {
   background-color: #0d8d42;
 }
 
-
 @media (max-width: 600px) {
-  .editPanel, .delPanel {
+  .editPanel,
+  .delPanel {
     flex-direction: column; /* Stack elements vertically */
   }
 }
