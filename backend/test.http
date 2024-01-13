@@ -1,5 +1,25 @@
+### GET
 get http://localhost:8080/api/Animals
 ###
 get http://localhost:8080/api/Colors
 ###
 get http://localhost:8080/api/Locations
+###
+get http://localhost:8080/api/Foods
+###
+get http://localhost:8080/api/Jobs
+
+### GET 1
+get http://localhost:8080/api/Animals/1
+###
+get http://localhost:8080/api/Jobs/2
+###
+get http://localhost:8080/api/Locations/3
+###
+get get http://localhost:8080/api/Foods/7
+###
+get get http://localhost:8080/api/Colors/5
+
+### DELETE
+delete http://localhost:8080/api/Foods/4
+  
