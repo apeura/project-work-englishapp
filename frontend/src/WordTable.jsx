@@ -37,15 +37,14 @@ const WordTable = ({ selectedTable }) => {
     const newScore = words.reduce((score, word) => {
       // comparing trimmed & lowercased answer to fi_word, if correct score +1
       if (userAnswers[word.id] === "") {
-         return score;
-      }
-      else if (userAnswers[word.id].toLowerCase().trim() === word.fi_word) {
+        return score;
+      } else if (userAnswers[word.id].toLowerCase().trim() === word.fi_word) {
         return score + 1;
       }
       return score;
     }, 0);
     setScore(newScore);
-     setSubmitted(true);
+    setSubmitted(true);
   };
 
   return (

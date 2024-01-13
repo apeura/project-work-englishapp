@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import WordTable from "../WordTable";
 
 import clovers from "../assets/cube.png";
 import "../App.css";
+ 
 
 const App = () => {
   // tag selection visual change
   const [selectedTag, setSelectedTag] = useState(false);
   //word tables
   const [filteredTables, setFilteredTables] = useState([]);
+
+ useEffect(() => {
+
+
+ }, []);
 
   const filterTables = (table) => {
     // if table already selected, remove
@@ -33,16 +39,8 @@ const App = () => {
   }
   return (
     <>
-      {" "}
-      <div>{<img src={clovers} className="logo" alt="React logo" />}</div>
-      <div className="header">
-        <h1>Learn English!</h1>
-      </div>
-      <div className="card">
-        {/*         <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button> */}
-      </div>
+      <div className="header"> </div>
+      <h1>Learn English!</h1>
       <p className="grey">
         What would you like to study?<br></br> (All selected topics are shown,
         you may select several.)
