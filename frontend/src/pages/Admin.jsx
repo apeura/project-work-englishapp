@@ -1,70 +1,120 @@
-import { useState } from "react";
-import Alert from "../Alert";
+import { useState, useEffect } from "react";
 import "../App.css";
 import AdminTable from "../AdminTable";
 
 function Admin() {
   const [selectedTable, setSelectedTable] = useState(null);
+  const [table, setTable] = useState(null); //table choice
   const [selectedRow, setSelectedRow] = useState(null);
-  const [table, setTable] = useState(false); //table choice
   const [action, setAction] = useState(false); //action choise del add edit
   const [engWord, setEngWord] = useState("");
   const [fiWord, setFiWord] = useState("");
+  const [id, setId] = useState("");
+
+ useEffect(() => {}, []);
 
   const handleChoice = (table) => {
-    // open admin panel
     setTable(true);
-    // set table
     setSelectedTable(table);
   };
+
+
 
   const handleActionChoice = (action) => {
     console.log("action ", action);
     setAction(action);
   };
-  const handleUpdateWordPair = (async) => {
-    console.log("handleUpdateWordPair in use");
-    
-    let formattedEngWord = engWord.trim().toLowerCase();
-    let formattedFiWord = fiWord.trim().toLowerCase();
 
-    
-  };
-
-  const handleAddNewWordPair = async () => {
-    console.log("handleAddNewPair in use");
-
+  const handleUpdateWordPair = async () => {
     let formattedEngWord = engWord.trim().toLowerCase();
     let formattedFiWord = fiWord.trim().toLowerCase();
 
     try {
       const response = await fetch(
-        // use set table
-        `http://localhost:8080/api/${selectedTable}`,
+        `http://localhost:8080/api/${selectedTable}/${selectedRow.id}`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          // use set words
           body: JSON.stringify({
             eng_word: formattedEngWord,
             fi_word: formattedFiWord,
           }),
         }
       );
-
       if (response.ok) {
         const result = await response.json();
-        console.log("Adding new word pair:", engWord, fiWord);
         console.log(result);
+        alert(
+          `Word pair with id ${selectedRow.id} updated in table ${selectedTable}!`
+        );
+      } else {
+        console.error("Error editing word pair:", response.status);
+        alert(`Unable to update word pair in table ${selectedTable}!`);
+      }
+    } catch (error) {
+      console.error("Error editing word pair:", error);
+    }
+    setTable(false);
+  };
+
+  const handleAddNewWordPair = async () => {
+    let formattedEngWord = engWord.trim().toLowerCase();
+    let formattedFiWord = fiWord.trim().toLowerCase();
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/${selectedTable}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            eng_word: formattedEngWord,
+            fi_word: formattedFiWord,
+          }),
+        }
+      );
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+        alert(
+          `New word pair ${formattedEngWord} & ${formattedFiWord} added to ${selectedTable}!`
+        );
       } else {
         console.error("Error adding new word pair:", response.status);
+        alert(`Unable to add new word pair to table ${selectedTable}!`);
       }
     } catch (error) {
       console.error("Error adding new word pair:", error);
     }
-    // close admin panel
+    setTable(false);
+  };
+
+  const handleDeleteWordPair = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/${selectedTable}/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+        alert(`Word pair with id ${id} deleted!`);
+      } else {
+        console.error("Error deleting word pair:", response.status);
+        alert(`Unable to delete word pair in table ${id}!`);
+      }
+    } catch (error) {
+      console.error("Error deleting new word pair:", error);
+    }
     setTable(false);
   };
 
@@ -73,7 +123,7 @@ function Admin() {
     //console.log("admin row data ", rowData);
   };
 
-  // edit
+  // edit del
   const getIdOrPlaceholder = () => {
     if (selectedRow !== null) {
       return selectedRow.id;
@@ -119,7 +169,9 @@ function Admin() {
         <button onClick={() => handleActionChoice("Add")}>Add</button>
         <button onClick={() => handleActionChoice("Edit")}>Edit</button>
         <button onClick={() => handleActionChoice("Delete")}>Delete</button>
+
         <div className={`addPanel ${action === "Add" ? "" : "hidden"}`}>
+          <h3>Given words will be added to {selectedTable}: </h3>
           <div>
             <input
               type="text"
@@ -134,9 +186,8 @@ function Admin() {
               onChange={(e) => setFiWord(e.target.value)}
             />
           </div>
-
           <button
-            id="adminButton"
+            id="addButton"
             className="admin"
             onClick={handleAddNewWordPair}
             disabled={
@@ -146,10 +197,13 @@ function Admin() {
             Add
           </button>
         </div>{" "}
+
         <div className={`editPanel ${action === "Edit" ? "" : "hidden"}`}>
           <div className="flex">
             <div>
-              <h3>Which ID would you like to edit?</h3>
+              <h3>
+                Click on the table to select which word pair you'd like to edit.
+              </h3>
               <input type="text" placeholder={getIdOrPlaceholder()} disabled />
               <input
                 type="text"
@@ -165,7 +219,7 @@ function Admin() {
               />
             </div>
             <button
-              id="adminButton"
+              id="editButton"
               className="admin"
               onClick={handleUpdateWordPair}
               disabled={
@@ -182,14 +236,33 @@ function Admin() {
             />
           </div>
         </div>
+
         <div className={`delPanel ${action === "Delete" ? "" : "hidden"}`}>
-          <p>DEL PANEL</p>
+          <div className="flex">
+            <div>
+              <h3>Type the ID of the word pair you wish to delete: </h3>
+              <input type="text" onChange={(e) => setId(e.target.value)} />
+            </div>
+            <p className={`delPanel ${id !== "" ? "" : "hidden"}`}>
+              Delete word pair with id {id}?
+            </p>
+            <button
+              id="delButton"
+              className="admin"
+              onClick={handleDeleteWordPair}
+              disabled={!(id.trim().length >= 1 && id.trim().length <= 2)}
+            >
+              Delete
+            </button>
+          </div>
+          <div className="flex">
+            <AdminTable
+              selectedTable={selectedTable}
+              onRowClick={handleRowClick}
+            />
+          </div>
         </div>
       </div>
-      {/*       <Alert /> */}
-      <p className="grey">
-        word thing here?word thing here? word thing here? word thing here? word{" "}
-      </p>
     </>
   );
 }
