@@ -4,18 +4,20 @@ const AdminTable = ({ selectedTable, onRowClick }) => {
   const [words, setWords] = useState([]); // set words that are displayed on tables
 
   useEffect(() => {
-    const fetchWords = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:8080/api/${selectedTable}`
-        );
-        const data = await response.json();
-        setWords(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchWords();
+    if (selectedTable !== null) {
+      const fetchWords = async () => {
+        try {
+          const response = await fetch(
+            `http://localhost:8080/api/${selectedTable}`
+          );
+          const data = await response.json();
+          setWords(data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      fetchWords();
+    }
   }, [selectedTable]);
 
   const rowClick = (id, engWord, fiWord) => {
@@ -36,8 +38,8 @@ const AdminTable = ({ selectedTable, onRowClick }) => {
         <tbody>
           {Object.values(words).map((word) => (
             <tr
-              onClick={() => rowClick(word.id, word.eng_word, word.fi_word)}
               key={word.id}
+              onClick={() => rowClick(word.id, word.eng_word, word.fi_word)}
             >
               <td>{word.id}</td>
               <td>{word.eng_word}</td>
