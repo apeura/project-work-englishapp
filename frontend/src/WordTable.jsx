@@ -36,9 +36,10 @@ const WordTable = ({ selectedTable }) => {
     // The final result of running the reducer across all elements of the array is a single value.
     const newScore = words.reduce((score, word) => {
       // comparing trimmed & lowercased answer to fi_word, if correct score +1
-      if (userAnswers[word.id] === "") {
-        return score;
-      } else if (userAnswers[word.id].toLowerCase().trim() === word.fi_word) {
+      if (
+        (userAnswers[word.id] !== undefined &&
+          userAnswers[word.id].toLowerCase().trim()) === word.fi_word
+      ) {
         return score + 1;
       }
       return score;
@@ -49,9 +50,10 @@ const WordTable = ({ selectedTable }) => {
 
   return (
     <>
-      <div className="singleTable">
+      <div className="singleTable"><h2>{selectedTable}</h2>
         <table>
           <thead>
+            
             <tr>
               <th>Word</th>
               <th>Answer</th>
