@@ -4,20 +4,38 @@ import Home from "./pages/Home";
 import Info from "./pages/Info";
 import "./App.css";
 
+/**
+ * Functional component representing the main application.
+ * @component
+ */
 const App = () => {
+  /**
+   * State hook to manage the current page of the application.
+   * @type {[string, Function]}
+   */
   const [currentPage, setCurrentPage] = useState("home");
 
-  // render current page based on which page you're on
+  /**
+   * useEffect hook to set the initial page based on the URL path.
+   */
   useEffect(() => {
     const currentPath = window.location.pathname.replace("/", "");
     setCurrentPage(currentPath || "home");
-  }, []); // Empty dependency array to run this effect only once on mount
+  }, []);
 
+  /**
+   * Function to handle navigation link clicks and update the current page.
+   * @param {string} page - The target page to navigate to.
+   */
   const handleNavLinkClick = (page) => {
     setCurrentPage(page);
     window.history.pushState(null, null, `/${page}`);
   };
-  
+
+  /**
+   * Function to render the appropriate page based on the current page state.
+   * @returns {JSX.Element} - React element representing the rendered page.
+   */
   const renderPage = () => {
     switch (currentPage) {
       case "home":
@@ -29,6 +47,10 @@ const App = () => {
     }
   };
 
+  /**
+   * Render method of the App component.
+   * @returns {JSX.Element} - React element representing the App component.
+   */
   return (
     <div>
       <nav>
@@ -47,6 +69,7 @@ const App = () => {
         </p>
       </nav>
       {renderPage()}
+      <footer>© Anni Peura</footer>
     </div>
   );
 };
