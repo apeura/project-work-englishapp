@@ -1,31 +1,75 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "../App.css";
 import AdminTable from "../AdminTable";
 
+/**
+ * Functional component representing the Admin page.
+ * @component
+ */
 function Admin() {
+  /**
+   * State hook to manage the selected table for Admin operations.
+   * @type {[string | null, Function]}
+   */
   const [selectedTable, setSelectedTable] = useState(null);
-  const [table, setTable] = useState(null); //table choice
+  /**
+   * State hook to manage the table choice for Admin operations.
+   * @type {[boolean | null, Function]}
+   */
+  const [table, setTable] = useState(null);
+  /**
+   * State hook to manage the selected row for Admin operations.
+   * @type {[number | null, Function]}
+   */
   const [selectedRow, setSelectedRow] = useState(null);
-  const [action, setAction] = useState(false); //action choise del add edit
+  /**
+   * State hook to manage the selected action (add, edit, delete) for Admin operations.
+   * @type {[boolean, Function]}
+   */
+  const [action, setAction] = useState(false);
+  /**
+   * State hook to manage the English word for Admin operations.
+   * @type {[string, Function]}
+   */
   const [engWord, setEngWord] = useState("");
+  /**
+   * State hook to manage the Finnish word for Admin operations.
+   * @type {[string, Function]}
+   */
   const [fiWord, setFiWord] = useState("");
+  /**
+   * State hook to manage the ID for Admin operations.
+   * @type {[string, Function]}
+   */
   const [id, setId] = useState("");
 
- useEffect(() => {}, []);
-
+  /**
+   * Function to handle the choice of a table for Admin operations.
+   * @param {string} table - The selected table.
+   * @returns {void}
+   */
   const handleChoice = (table) => {
     setTable(true);
     setSelectedTable(table);
   };
 
-
-
+  /**
+   * Function to handle the choice of an action (add, edit, delete) for Admin operations.
+   * @param {boolean} action - The selected action.
+   * @returns {void}
+   */
   const handleActionChoice = (action) => {
     console.log("action ", action);
     setAction(action);
   };
-
+  /**
+   * Handles the update of a word pair in the selected table.
+   * Sends a PUT request to update the word pair with new English and Finnish words.
+   * Displays alerts based on the success or failure of the update operation.
+   * @returns {void}
+   */
   const handleUpdateWordPair = async () => {
+    // Trim and convert English and Finnish words to lowercase
     let formattedEngWord = engWord.trim().toLowerCase();
     let formattedFiWord = fiWord.trim().toLowerCase();
 
@@ -43,6 +87,7 @@ function Admin() {
           }),
         }
       );
+
       if (response.ok) {
         const result = await response.json();
         console.log(result);
@@ -56,10 +101,17 @@ function Admin() {
     } catch (error) {
       console.error("Error editing word pair:", error);
     }
+    // Close Admin panel.
     setTable(false);
   };
-
+  /**
+   * Handles the addition of a new word pair to the selected table.
+   * Sends a POST request to add a new word pair with English and Finnish words.
+   * Displays alerts based on the success or failure of the addition operation.
+   * @returns {void}
+   */
   const handleAddNewWordPair = async () => {
+    // Trim and convert English and Finnish words to lowercase
     let formattedEngWord = engWord.trim().toLowerCase();
     let formattedFiWord = fiWord.trim().toLowerCase();
 
@@ -77,6 +129,7 @@ function Admin() {
           }),
         }
       );
+
       if (response.ok) {
         const result = await response.json();
         console.log(result);
@@ -90,9 +143,15 @@ function Admin() {
     } catch (error) {
       console.error("Error adding new word pair:", error);
     }
+    // Close Admin panel.
     setTable(false);
   };
-
+  /**
+   * Handles the deletion of a word pair from the selected table.
+   * Sends a DELETE request to remove the word pair with the specified ID.
+   * Displays alerts based on the success or failure of the deletion operation.
+   * @returns {void}
+   */
   const handleDeleteWordPair = async () => {
     try {
       const response = await fetch(
@@ -104,6 +163,7 @@ function Admin() {
           },
         }
       );
+
       if (response.ok) {
         const result = await response.json();
         console.log(result);
@@ -115,15 +175,23 @@ function Admin() {
     } catch (error) {
       console.error("Error deleting new word pair:", error);
     }
+    // Close Admin panel.
     setTable(false);
   };
-
+  /**
+   * Handles the click event on a table row.
+   * Sets the selected row data.
+   * @param {Object} rowData - Data of the clicked table row.
+   * @returns {void}
+   */
   const handleRowClick = (rowData) => {
     setSelectedRow(rowData);
-    //console.log("admin row data ", rowData);
   };
 
-  // edit del
+  /**
+   * Returns the ID of the selected row or a placeholder if no row is selected.
+   * @returns {string} - ID or placeholder string.
+   */
   const getIdOrPlaceholder = () => {
     if (selectedRow !== null) {
       return selectedRow.id;
@@ -131,6 +199,10 @@ function Admin() {
       return "ID";
     }
   };
+  /**
+   * Returns the English word of the selected row or a placeholder if no row is selected.
+   * @returns {string} - English word or placeholder string.
+   */
   const getEngOrPlaceholder = () => {
     if (selectedRow !== null) {
       return selectedRow.engWord;
@@ -138,6 +210,10 @@ function Admin() {
       return "English Word";
     }
   };
+  /**
+   * Returns the Finnish word of the selected row or a placeholder if no row is selected.
+   * @returns {string} - Finnish word or placeholder string.
+   */
   const getFiOrPlaceholder = () => {
     if (selectedRow !== null) {
       return selectedRow.fiWord;
@@ -146,15 +222,19 @@ function Admin() {
     }
   };
 
+  /**
+   * Render method of the App component.
+   * @returns {JSX.Element} The JSX element representing the Admin Page.
+   */
   return (
     <>
-      <div></div>
       <h1>Admin Page</h1>
       <div className="card">
         <p>
           Here you can add, delete or update wordpairs for learning purposes.
-          <br></br> Choose which table you`&apos;`ll be handling.
+          <br></br> Choose below which table you&apos;ll be handling.
         </p>
+        {/* Table buttons. */}
         <button onClick={() => handleChoice("Animals")}>Animals</button>
         <button onClick={() => handleChoice("Colors")}>Colors</button>
         <button onClick={() => handleChoice("Locations")}>Locations</button>
@@ -166,9 +246,11 @@ function Admin() {
         {" "}
         <h2>Chosen table: {selectedTable}</h2>
         <p className="grey">What would you like to do?</p>
+        {/* Action buttons. */}
         <button onClick={() => handleActionChoice("Add")}>Add</button>
         <button onClick={() => handleActionChoice("Edit")}>Edit</button>
         <button onClick={() => handleActionChoice("Delete")}>Delete</button>
+        {/* Add panel. */}
         <div className={`addPanel ${action === "Add" ? "" : "hidden"}`}>
           <h3>Given words will be added to {selectedTable}: </h3>
           <div>
@@ -196,12 +278,13 @@ function Admin() {
             Add
           </button>
         </div>{" "}
+        {/* Edit panel. */}
         <div className={`editPanel ${action === "Edit" ? "" : "hidden"}`}>
           <div className="flex">
             <div>
               <h3>
-                Click on the table to select which word pair you`&apos;`d like
-                to edit.
+                Click on the table to select which word pair you&apos;d like to
+                edit.
               </h3>
               <input type="text" placeholder={getIdOrPlaceholder()} disabled />
               <input
@@ -235,6 +318,7 @@ function Admin() {
             />
           </div>
         </div>
+        {/* Delete panel. */}
         <div className={`delPanel ${action === "Delete" ? "" : "hidden"}`}>
           <div className="flex">
             <div>
