@@ -1,61 +1,80 @@
-// npm install express mysql cors dotenv
 const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql");
 const app = express();
 const port = 8080;
-
+/**
+ * MySQL connection pool configuration.
+ * @type {mysql.Pool}
+ */
 const pool = mysql.createPool({
   host: process.env.host,
   user: process.env.user,
   password: process.env.password,
   database: process.env.database,
   connectionLimit: 10,
-  // AI solution
+  // AI solution:
   authPlugins: {
     mysql_clear_password: () => () => Buffer.from(process.env.password + "\0"),
   },
 });
 
+app.use(express.json());
+app.use(express.static("./frontend/dist"));
+app.use(cors());
 app.use((req, res, next) => {
+  /**
+   * Set CORS headers for all routes.
+   */
   res.setHeader("Access-Control-Allow-Origin", "*");
   next();
 });
 
-app.use(express.json());
-app.use(express.static("./frontend/dist"));
-app.use(cors());
-
-// Get
+/**
+ * GET request handler for fetching all data from a specified table.
+ * @param {string} req.params.table - The name of the table.
+ * @returns {Object} - JSON response containing the fetched data.
+ */
 app.get("/api/:table", (req, res) => {
   const table = req.params.table;
   pool.query(`SELECT * FROM ${table}`, (error, results) => {
     if (error) {
       console.error("Error fetching data:", error);
-      res.status(500).json({ error: "Internal Server Error!!" });
+      res.status(500).json({ error: "Internal Server Error!" });
     } else {
       res.json(results);
     }
   });
 });
-
-// Get 1
+/**
+ * GET request handler for fetching a specific data from a table by ID.
+ * @param {string} req.params.table - The name of the table.
+ * @param {string} req.params.id - The ID of the data to fetch.
+ * @returns {Object} - JSON response containing the fetched record.
+ */
 app.get("/api/:table/:id", (req, res) => {
   const table = req.params.table;
   const id = req.params.id;
 
   pool.query(`SELECT * FROM ${table} WHERE id= ?`, [id], (error, results) => {
     if (error) {
-      console.error("Error fetching data:", error);
-      res.status(500).json({ error: "Internal Server Error!!" });
+      console.error(`Error fetching data with id ${id}:`, error);
+      res.status(500).json({ error: "Internal Server Error!" });
     } else {
       res.json(results);
     }
   });
 });
-
-// Post
+/**
+ * POST request handler for inserting new data into a specified table.
+ * @param {string} req.params.table - The name of the table.
+ * @param {Object} req.body - Request body containing data to be inserted.
+ * @param {string} req.body.eng_word - English word.
+ * @param {string} req.body.fi_word - Finnish word.
+ * @returns {Object} - JSON response indicating success or failure.
+ */
 app.post("/api/:table", (req, res) => {
+
   const table = req.params.table;
   const { eng_word, fi_word } = req.body;
   const sql = `INSERT INTO ${table} (eng_word, fi_word) VALUES (?, ?)`;
@@ -63,52 +82,64 @@ app.post("/api/:table", (req, res) => {
   pool.query(sql, [eng_word, fi_word], (error, results) => {
     if (error) {
       console.error("Error inserting data:", error);
-      return res.status(500).json({ error: "Internal Server Error!!" });
+      return res.status(500).json({ error: "Internal Server Error!" });
     } else {
-      console.log("Data inserted successfully");
       return res
         .status(200)
-        .json({ message: "Data received and inserted successfully" });
+        .json({ message: "Data received and inserted successfully." });
     }
   });
 });
-
-// Put
+/**
+ * PUT request handler for updating data in a specified table by ID.
+ * @param {string} req.params.table - The name of the table.
+ * @param {string} req.params.id - The ID of the record to update.
+ * @param {Object} req.body - Request body containing data to be updated.
+ * @param {string} req.body.eng_word - Updated English word.
+ * @param {string} req.body.fi_word - Updated Finnish word.
+ * @returns {Object} - JSON response indicating success or failure.
+ */
 app.put("/api/:table/:id", (req, res) => {
+
   const table = req.params.table;
   const id = req.params.id;
   const { eng_word, fi_word } = req.body;
-  const sql = `UPDATE  ${table} SET eng_word = ?, fi_word = ? WHERE id = ?`;
 
+  const sql = `UPDATE  ${table} SET eng_word = ?, fi_word = ? WHERE id = ?`;
   pool.query(sql, [eng_word, fi_word, id], (error, results) => {
     if (error) {
       console.error("Error inserting data:", error);
-      return res.status(500).json({ error: "Internal Server Error!!" });
+      return res.status(500).json({ error: "Internal Server Error!" });
     } else {
-      console.log("Data inserted successfully");
       return res
         .status(200)
-        .json({ message: "Data received and inserted successfully" });
+        .json({ message: "Data received and inserted successfully." });
     }
   });
 });
-
-// Delete
+/**
+ * DELETE request handler for deleting data from a specified table by ID.
+ * @param {string} req.params.table - The name of the table.
+ * @param {string} req.params.id - The ID of the record to delete.
+ * @returns {Object} - JSON response indicating success or failure.
+ */
 app.delete("/api/:table/:id", (req, res) => {
+
   const table = req.params.table;
   const id = req.params.id;
 
   pool.query(`DELETE FROM ${table} WHERE id = ?`, [id], (error, results) => {
     if (error) {
       console.error("Error deleting data:", error);
-      return res.status(500).json({ error: "Internal Server Error!!" });
+      return res.status(500).json({ error: "Internal Server Error!" });
     } else {
-      console.log("Data deleting successfully");
-      return res.status(200).json({ message: "Data deleted successfully" });
+      return res.status(200).json({ message: "Data deleted successfully." });
     }
   });
 });
-
+/**
+ * Start the Express server.
+ */
 if (pool) {
   console.log("MySQL: connection successful.");
   server = app
