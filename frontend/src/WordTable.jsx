@@ -1,12 +1,42 @@
 import { useState, useEffect } from "react";
 
+/**
+ * React component representing a table for words.
+ * @component
+ * @param {Object} props - React component props.
+ * @param {string} props.selectedTable - The selected table for fetching words.
+ * @returns {JSX.Element} - React element representing the WordTable component.
+ */
 const WordTable = ({ selectedTable }) => {
-  const [words, setWords] = useState([]); // set words that are displayed on tables
-  const [userAnswers, setUserAnswers] = useState({}); // set user answers
-  const [score, setScore] = useState(0); // set score for table
-  const [submitted, setSubmitted] = useState(false); // submitted, for score display
+  /**
+   * State hook to manage the words displayed on the table.
+   * @type {[Array<Object>, Function]}
+   */
+  const [words, setWords] = useState([]);
+  /**
+   * State hook to manage user answers.
+   * @type {[Object, Function]}
+   */
+  const [userAnswers, setUserAnswers] = useState({});
+  /**
+   * State hook to manage the score for the table.
+   * @type {[number, Function]}
+   */
+  const [score, setScore] = useState(0);
+  /**
+   * State hook to track whether answers have been submitted.
+   * @type {[boolean, Function]}
+   */
+  const [submitted, setSubmitted] = useState(false);
 
+  /**
+   * useEffect hook to fetch words from the API based on the selected table.
+   */
   useEffect(() => {
+    /**
+     * Async function to fetch words from the API and update the state.
+     * @returns {void}
+     */
     const fetchWords = async () => {
       try {
         const response = await fetch(
@@ -21,19 +51,24 @@ const WordTable = ({ selectedTable }) => {
     fetchWords();
   }, [selectedTable]);
 
-  // Answer intake and logging
+  /**
+   * Function to handle user answers for each word.
+   * @param {number} wordId - The ID of the word.
+   * @param {string} answer - The user's answer for the word.
+   * @returns {void}
+   */
   const handleAnswer = (wordId, answer) => {
     setUserAnswers((prevAnswers) => ({
       ...prevAnswers,
-      // add/update wordId's key to answer
       [wordId]: answer,
     }));
   };
 
-  // Count score
+  /**
+   * Function to calculate and set the score based on user answers.
+   * @returns {void}
+   */
   const handleSubmit = () => {
-    // reduce() executes a "reducer" callback function on each element of the array.
-    // The final result of running the reducer across all elements of the array is a single value.
     const newScore = words.reduce((score, word) => {
       // comparing trimmed & lowercased answer to fi_word, if correct score +1
       if (
@@ -48,12 +83,16 @@ const WordTable = ({ selectedTable }) => {
     setSubmitted(true);
   };
 
+  /**
+   * Render method of the WordTable component.
+   * @returns {JSX.Element} - React element representing the WordTable component.
+   */
   return (
     <>
-      <div className="singleTable"><h2>{selectedTable}</h2>
+      <div className="singleTable">
+        <h2>{selectedTable}</h2>
         <table>
           <thead>
-            
             <tr>
               <th>Word</th>
               <th>Answer</th>
