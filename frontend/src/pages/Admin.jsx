@@ -59,7 +59,6 @@ function Admin() {
    * @returns {void}
    */
   const handleActionChoice = (action) => {
-    console.log("action ", action);
     setAction(action);
   };
   /**
