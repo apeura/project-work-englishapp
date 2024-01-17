@@ -35,6 +35,7 @@ const WordTable = ({ selectedTable }) => {
   useEffect(() => {
     /**
      * Async function to fetch words from the API and update the state.
+     * If the fetched data contains more than 8 items, it shuffles the data and selects the first 8.
      * @returns {void}
      */
     const fetchWords = async () => {
@@ -43,7 +44,13 @@ const WordTable = ({ selectedTable }) => {
           `http://localhost:8080/api/${selectedTable}`
         );
         const data = await response.json();
-        setWords(data);
+        if (data.length > 8) {
+          const shuffledData = data.sort(() => Math.random() - 0.5);
+          const selectedWords = shuffledData.slice(0, 8);
+          setWords(selectedWords);
+        } else {
+          setWords(data);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
