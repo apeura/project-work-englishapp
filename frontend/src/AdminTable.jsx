@@ -1,10 +1,37 @@
 import { useState, useEffect } from "react";
-
+/**
+ * Functional component representing an administrative table.
+ *
+ * @component
+ * @param {Object} props - Component properties.
+ * @param {string} props.selectedTable - The currently selected table name.
+ * @param {Function} props.onRowClick - Handler for row click events.
+ * @param {Function} props.onRowDelete - Handler for row delete events.
+ * @returns {React.ReactElement} The rendered component.
+ */
 const AdminTable = ({ selectedTable, onRowClick, onRowDelete }) => {
-  const [words, setWords] = useState([]); // set words that are displayed on tables
+  /**
+   * State hook for managing the words displayed in the table.
+   *
+   * @type {Array}
+   */
+  const [words, setWords] = useState([]);
 
+  /**
+   * useEffect hook to fetch words from the API based on the selected table.
+   * Updates the component state with the fetched words.
+   *
+   * @effect
+   */
   useEffect(() => {
     if (selectedTable !== null) {
+      /**
+       * Async function to fetch words from the API and update the state.
+       *
+       * @async
+       * @function
+       * @returns {void}
+       */
       const fetchWords = async () => {
         try {
           const response = await fetch(
@@ -21,12 +48,33 @@ const AdminTable = ({ selectedTable, onRowClick, onRowDelete }) => {
     }
   }, [selectedTable, words]);
 
+  /**
+   * Handler for row click events.
+   *
+   * @function
+   * @param {number} id - The ID of the clicked row.
+   * @param {string} engWord - The English word of the clicked row.
+   * @param {string} fiWord - The Finnish word of the clicked row.
+   * @returns {void}
+   */
   const rowClick = (id, engWord, fiWord) => {
     onRowClick({ id, engWord, fiWord });
   };
+  /**
+   * Handler for row delete events.
+   *
+   * @function
+   * @param {number} id - The ID of the row to be deleted.
+   * @returns {void}
+   */
   const handleRowDelete = (id) => {
     onRowDelete({ id });
   };
+
+  /**
+   * Render method of the AdminTable component.
+   * @returns {JSX.Element} - React element representing the AdminTable component.
+   */
   return (
     <>
       <table className="admin">
