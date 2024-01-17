@@ -47,10 +47,8 @@ function Info() {
             <div className="flex">
               <h3>Creator:</h3>
               <span>Anni Peura</span>
-              <h3>Worked hours:</h3>
-              <span>Estimate: many(?)</span>
               <h3>Last update:</h3>
-              <span>13.01.2024</span>
+              <span>17.01.2024</span>
             </div>
           </div>
         </div>
