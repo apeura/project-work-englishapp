@@ -13,17 +13,12 @@ function Admin() {
    */
   const [selectedTable, setSelectedTable] = useState(null);
   /**
-   * State hook to manage the table choice for Admin operations.
-   * @type {[boolean | null, Function]}
-   */
-  const [table, setTable] = useState(null);
-  /**
    * State hook to manage the selected row for Admin operations.
    * @type {[number | null, Function]}
    */
   const [selectedRow, setSelectedRow] = useState(null);
   /**
-   * State hook to manage the selected action (add, edit, delete) for Admin operations.
+   * State hook to manage the selected action (add, edit) for Admin operations.
    * @type {[boolean, Function]}
    */
   const [action, setAction] = useState(false);
@@ -37,11 +32,6 @@ function Admin() {
    * @type {[string, Function]}
    */
   const [fiWord, setFiWord] = useState("");
-  /**
-   * State hook to manage the ID for Admin operations.
-   * @type {[string, Function]}
-   */
-  const [id, setId] = useState("");
 
   /**
    * Function to handle the choice of a table for Admin operations.
@@ -49,16 +39,15 @@ function Admin() {
    * @returns {void}
    */
   const handleChoice = (table) => {
-    setTable(true);
     setSelectedTable(table);
   };
-
   /**
    * Function to handle the choice of an action (add, edit, delete) for Admin operations.
    * @param {boolean} action - The selected action.
    * @returns {void}
    */
   const handleActionChoice = (action) => {
+    console.log(action);
     setAction(action);
   };
   /**
@@ -100,8 +89,7 @@ function Admin() {
     } catch (error) {
       console.error("Error editing word pair:", error);
     }
-    // Close Admin panel.
-    setTable(false);
+    setSelectedTable(selectedTable);
   };
   /**
    * Handles the addition of a new word pair to the selected table.
@@ -142,8 +130,6 @@ function Admin() {
     } catch (error) {
       console.error("Error adding new word pair:", error);
     }
-    // Close Admin panel.
-    setTable(false);
   };
   /**
    * Handles the deletion of a word pair from the selected table.
@@ -151,10 +137,10 @@ function Admin() {
    * Displays alerts based on the success or failure of the deletion operation.
    * @returns {void}
    */
-  const handleDeleteWordPair = async () => {
+  const handleRowDelete = async (rowData) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/${selectedTable}/${id}`,
+        `http://localhost:8080/api/${selectedTable}/${rowData.id}`,
         {
           method: "DELETE",
           headers: {
@@ -166,16 +152,14 @@ function Admin() {
       if (response.ok) {
         const result = await response.json();
         console.log(result);
-        alert(`Word pair with id ${id} deleted!`);
+        alert(`Word pair with id ${rowData.id} deleted!`);
       } else {
         console.error("Error deleting word pair:", response.status);
-        alert(`Unable to delete word pair in table ${id}!`);
+        alert(`Unable to delete word pair in table ${rowData.id}}!`);
       }
     } catch (error) {
-      console.error("Error deleting new word pair:", error);
+      console.error("Error deleting word pair:", error);
     }
-    // Close Admin panel.
-    setTable(false);
   };
   /**
    * Handles the click event on a table row.
@@ -186,7 +170,6 @@ function Admin() {
   const handleRowClick = (rowData) => {
     setSelectedRow(rowData);
   };
-
   /**
    * Returns the ID of the selected row or a placeholder if no row is selected.
    * @returns {string} - ID or placeholder string.
@@ -241,27 +224,26 @@ function Admin() {
         <button onClick={() => handleChoice("Foods")}>Foods</button>
       </div>
 
-      <div className={`adminPanel ${table ? "" : "hidden"}`}>
+      <div className={`adminPanel ${selectedTable ? "" : "hidden"}`}>
         {" "}
         <h2>Chosen table: {selectedTable}</h2>
         <p className="grey">What would you like to do?</p>
         {/* Action buttons. */}
         <button onClick={() => handleActionChoice("Add")}>Add</button>
         <button onClick={() => handleActionChoice("Edit")}>Edit</button>
-        <button onClick={() => handleActionChoice("Delete")}>Delete</button>
         {/* Add panel. */}
         <div className={`addPanel ${action === "Add" ? "" : "hidden"}`}>
-          <h3>Given words will be added to {selectedTable}: </h3>
+          <h3>Given words will be added to {selectedTable} </h3>
           <div>
             <input
               type="text"
-              placeholder="english word"
+              placeholder="English word"
               value={engWord}
               onChange={(e) => setEngWord(e.target.value)}
             />
             <input
               type="text"
-              placeholder="finnish word"
+              placeholder="Finnish word"
               value={fiWord}
               onChange={(e) => setFiWord(e.target.value)}
             />
@@ -310,38 +292,13 @@ function Admin() {
               Update Word Pair
             </button>
           </div>
-          <div className="flex">
-            <AdminTable
-              selectedTable={selectedTable}
-              onRowClick={handleRowClick}
-            />
-          </div>
         </div>
-        {/* Delete panel. */}
-        <div className={`delPanel ${action === "Delete" ? "" : "hidden"}`}>
-          <div className="flex">
-            <div>
-              <h3>Type the ID of the word pair you wish to delete: </h3>
-              <input type="text" onChange={(e) => setId(e.target.value)} />
-            </div>
-            <p className={`delPanel ${id !== "" ? "" : "hidden"}`}>
-              Delete word pair with id {id}?
-            </p>
-            <button
-              id="delButton"
-              className="admin"
-              onClick={handleDeleteWordPair}
-              disabled={!(id.trim().length >= 1 && id.trim().length <= 2)}
-            >
-              Delete
-            </button>
-          </div>
-          <div className="flex">
-            <AdminTable
-              selectedTable={selectedTable}
-              onRowClick={handleRowClick}
-            />
-          </div>
+        <div className={`flex ${selectedTable === null ? "" : "hidden"}`}>
+          <AdminTable
+            selectedTable={selectedTable}
+            onRowClick={handleRowClick}
+            onRowDelete={handleRowDelete}
+          />
         </div>
       </div>
     </>
