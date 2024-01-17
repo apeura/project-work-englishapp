@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const AdminTable = ({ selectedTable, onRowClick }) => {
+const AdminTable = ({ selectedTable, onRowClick, onRowDelete }) => {
   const [words, setWords] = useState([]); // set words that are displayed on tables
 
   useEffect(() => {
@@ -16,14 +16,16 @@ const AdminTable = ({ selectedTable, onRowClick }) => {
           console.error("Error fetching data:", error);
         }
       };
+
       fetchWords();
     }
-  }, [selectedTable]);
+  }, [selectedTable, words]);
 
   const rowClick = (id, engWord, fiWord) => {
-    //alert
-    //console.log(`id ${id}, eng ${engWord}, fi ${fiWord}`);
     onRowClick({ id, engWord, fiWord });
+  };
+  const handleRowDelete = (id) => {
+    onRowDelete({ id });
   };
   return (
     <>
@@ -44,6 +46,10 @@ const AdminTable = ({ selectedTable, onRowClick }) => {
               <td>{word.id}</td>
               <td>{word.eng_word}</td>
               <td>{word.fi_word}</td>
+              <td>
+                {" "}
+                <button onClick={() => handleRowDelete(word.id)}>Delete</button>
+              </td>
             </tr>
           ))}
         </tbody>
