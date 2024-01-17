@@ -29,7 +29,22 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   next();
 });
-
+/**
+ * GET request endpoint for fetching a list of tables from the database.
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {void}
+ */
+app.get("/api", (req, res) => {
+  pool.query(`SHOW TABLES`, (error, results) => {
+    if (error) {
+      console.error("Error fetching data:", error);
+      res.status(500).json({ error: "Internal Server Error!" });
+    } else {
+      res.json(results);
+    }
+  });
+});
 /**
  * GET request handler for fetching all data from a specified table.
  * @param {string} req.params.table - The name of the table.
