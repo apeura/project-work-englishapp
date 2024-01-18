@@ -6,11 +6,12 @@
 }
 body {
   background: rgb(183, 207, 185);
+  color: black;
   background: linear-gradient(
     180deg,
     rgb(183, 207, 207) 0%,
     rgb(185, 199, 195) 20%,
-    rgba(136, 235, 255, 0) 100%
+    rgba(253, 253, 253, 0.993) 100%
   );
 }
 button {
