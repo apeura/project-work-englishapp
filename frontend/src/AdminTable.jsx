@@ -34,6 +34,7 @@ const AdminTable = ({ selectedTable, onRowClick, onRowDelete }) => {
        */
       const fetchWords = async () => {
         try {
+          console.log("fetch effect: ", selectedTable);
           const response = await fetch(
             `http://localhost:8080/api/${selectedTable}`
           );
@@ -46,7 +47,7 @@ const AdminTable = ({ selectedTable, onRowClick, onRowDelete }) => {
 
       fetchWords();
     }
-  }, [selectedTable, words]);
+  }, [selectedTable, onRowClick]);
 
   /**
    * Handler for row click events.
