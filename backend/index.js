@@ -41,9 +41,9 @@ app.get("/api", (req, res) => {
   pool.query(`SHOW TABLES`, (error, results) => {
     if (error) {
       console.error("Error fetching data:", error);
-      res.status(500).json({ error: "Internal Server Error!" });
+      res.status(404).json({ error: "Not found." });
     } else {
-      res.json(results);
+      res.status(200).json("Data fetched successfully ", results);
     }
   });
 });
@@ -57,9 +57,9 @@ app.get("/api/:table", (req, res) => {
   pool.query(`SELECT * FROM ${table}`, (error, results) => {
     if (error) {
       console.error("Error fetching data:", error);
-      res.status(500).json({ error: "Internal Server Error!" });
+      res.status(404).json({ message: `No result for table ${table}` });
     } else {
-      res.json(results);
+      res.status(200).json("Data fetched successfully ", results);
     }
   });
 });
@@ -76,9 +76,9 @@ app.get("/api/:table/:id", (req, res) => {
   pool.query(`SELECT * FROM ${table} WHERE id= ?`, [id], (error, results) => {
     if (error) {
       console.error(`Error fetching data with id ${id}:`, error);
-      res.status(500).json({ error: "Internal Server Error!" });
+      res.status(404).json({ message: `No result for ${table} id ${id}` });
     } else {
-      res.json(results);
+      res.status(200).json("Data fetched successfully ", results);
     }
   });
 });
@@ -99,10 +99,12 @@ app.post("/api/:table", (req, res) => {
   pool.query(sql, [eng_word, fi_word], (error, results) => {
     if (error) {
       console.error("Error inserting data:", error);
-      return res.status(500).json({ error: "Internal Server Error!" });
+      return res
+        .status(404)
+        .json({ message: `No result for ${table}` });
     } else {
       return res
-        .status(200)
+        .status(201)
         .json({ message: "Data received and inserted successfully." });
     }
   });
@@ -126,7 +128,7 @@ app.put("/api/:table/:id", (req, res) => {
   pool.query(sql, [eng_word, fi_word, id], (error, results) => {
     if (error) {
       console.error("Error inserting data:", error);
-      return res.status(500).json({ error: "Internal Server Error!" });
+      return res.status(404).json({ message: `No result for ${table} id ${id}` });
     } else {
       return res
         .status(200)
@@ -148,9 +150,11 @@ app.delete("/api/:table/:id", (req, res) => {
   pool.query(`DELETE FROM ${table} WHERE id = ?`, [id], (error, results) => {
     if (error) {
       console.error("Error deleting data:", error);
-      return res.status(500).json({ error: "Internal Server Error!" });
+      return res
+        .status(404)
+        .json({ message: `No result for ${table} id ${id}` });
     } else {
-      return res.status(200).json({ message: "Data deleted successfully." });
+      return res.status(204).json({ message: "Data deleted successfully." });
     }
   });
 });
