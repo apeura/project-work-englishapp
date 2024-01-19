@@ -157,8 +157,7 @@ function Admin() {
         const result = await response.json();
         console.log(result);
         alert(`Word pair with id ${rowData.id} deleted!`);
-        setFiWord("");
-        setEngWord("");
+        setSelectedRow(null);
       } else {
         console.error("Error deleting word pair:", response.status);
         alert(`Unable to delete word pair in table ${rowData.id}}!`);
