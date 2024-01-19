@@ -47,7 +47,7 @@ const AdminTable = ({ selectedTable, onRowClick, onRowDelete }) => {
 
       fetchWords();
     }
-  }, [selectedTable, onRowClick]);
+  }, [selectedTable, onRowClick, onRowDelete]);
 
   /**
    * Handler for row click events.
