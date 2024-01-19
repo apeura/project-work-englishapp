@@ -30,6 +30,9 @@ The application is running at https://learn-english-2qxb.onrender.com/
 ## Credits
 Thank you to chatGPT for generating word pairs for the database.
 
-#### Screen recording
+#### Screencast
+https://www.youtube.com/watch?v=_z9tDk1QT10
+#### Other details
+AI was used to generate initial JSdoc comments. AI was also used to generate word pairs for data tables (currently only Foods).
 
 © [Anni Peura]()
