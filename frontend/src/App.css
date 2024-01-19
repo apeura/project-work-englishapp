@@ -129,12 +129,12 @@ td:nth-child(1) {
 }
 
 .score.hidden {
-  visibility: hidden;
+  display: none;
   font-family: "Jura", sans-serif;
 }
 
 .score {
-  visibility: visible;
+  display: block;
   font-family: "Jura", sans-serif;
 }
 
