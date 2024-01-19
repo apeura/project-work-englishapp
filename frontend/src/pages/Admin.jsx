@@ -42,7 +42,7 @@ function Admin() {
     setSelectedTable(table);
   };
   /**
-   * Function to handle the choice of an action (add, edit, delete) for Admin operations.
+   * Function to handle the choice of an action (add, edit) for Admin operations.
    * @param {boolean} action - The selected action.
    * @returns {void}
    */
@@ -82,6 +82,8 @@ function Admin() {
         alert(
           `Word pair with id ${selectedRow.id} updated in table ${selectedTable}!`
         );
+        setFiWord("");
+        setEngWord("");
       } else {
         console.error("Error editing word pair:", response.status);
         alert(`Unable to update word pair in table ${selectedTable}!`);
@@ -123,6 +125,8 @@ function Admin() {
         alert(
           `New word pair ${formattedEngWord} & ${formattedFiWord} added to ${selectedTable}!`
         );
+        setFiWord("");
+        setEngWord("");
       } else {
         console.error("Error adding new word pair:", response.status);
         alert(`Unable to add new word pair to table ${selectedTable}!`);
@@ -153,6 +157,8 @@ function Admin() {
         const result = await response.json();
         console.log(result);
         alert(`Word pair with id ${rowData.id} deleted!`);
+        setFiWord("");
+        setEngWord("");
       } else {
         console.error("Error deleting word pair:", response.status);
         alert(`Unable to delete word pair in table ${rowData.id}}!`);

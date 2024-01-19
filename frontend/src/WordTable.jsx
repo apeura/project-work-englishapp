@@ -89,7 +89,7 @@ const WordTable = ({ selectedTable }) => {
     setScore(newScore);
     setSubmitted(true);
   };
-
+  
   /**
    * Render method of the WordTable component.
    * @returns {JSX.Element} - React element representing the WordTable component.
