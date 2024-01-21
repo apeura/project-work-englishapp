@@ -41,7 +41,7 @@ const WordTable = ({ selectedTable }) => {
     const fetchWords = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/${selectedTable}`
+          `http://localhost:8080/api/${selectedTable}`
         );
         const data = await response.json();
         if (data.length > 8) {

@@ -31,15 +31,6 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
 });
-app.get((req, res, next) => {
-  /**
-   * Set CORS headers for get routes.
-   */
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
 /**
  * GET request endpoint for fetching a list of tables from the database.
  * @param {Object} req - Express request object.
@@ -61,7 +52,7 @@ app.get("/api", (req, res) => {
  * @param {string} req.params.table - The name of the table.
  * @returns {Object} - JSON response containing the fetched data.
  */
-app.get("/:table", (req, res) => {
+app.get("/api/:table", (req, res) => {
   const table = req.params.table;
   pool.query(`SELECT * FROM ${table}`, (error, results) => {
     if (error) {
@@ -78,7 +69,7 @@ app.get("/:table", (req, res) => {
  * @param {string} req.params.id - The ID of the data to fetch.
  * @returns {Object} - JSON response containing the fetched record.
  */
-app.get("/:table/:id", (req, res) => {
+app.get("/api/:table/:id", (req, res) => {
   const table = req.params.table;
   const id = req.params.id;
 
