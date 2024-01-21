@@ -18,10 +18,10 @@ const pool = mysql.createPool({
     mysql_clear_password: () => () => Buffer.from(process.env.password + "\0"),
   },
 });
-
+app.use(cors());
 app.use(express.json());
 app.use(express.static("./frontend/dist"));
-app.use(cors());
+
 
 /**
  * GET request endpoint for fetching a list of tables from the database.
