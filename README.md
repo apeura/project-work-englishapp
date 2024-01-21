@@ -2,7 +2,7 @@
 Learn English! -app is an application meant for studying English - Finnish word pairs. The player can choose between five different topics and see how many correct answers they were able to get. App includes a Admin page where word pairs can be added, edited and deleted.
 
 ## Motivation
-This project is a part of **TAMK's Fall 2023 backend module**. The goal of this project is to create a full stack application 
+This project is a part of **TAMK's Fall 2023 backend module**. The goal of this project is to create a full stack application.
 
 ## Screenshots
 ![play](https://github.com/apeura/project-work-englishapp/assets/113358099/3199cab5-76e4-4a0d-83eb-98fdbf9a0758)
@@ -28,8 +28,9 @@ No installation needed.
 The application is running at https://learn-english-2qxb.onrender.com/
 
 ## Credits
-Thank you to chatGPT for generating word pairs for the database.
+Thank you to chatGPT for generating initial JSdoc comments and word pairs for the database (currently only Foods).
 
-#### Screen recording
+#### Screencast
+https://www.youtube.com/watch?v=aVx1x7m5UAo
 
 © [Anni Peura]()
