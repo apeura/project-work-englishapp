@@ -22,15 +22,7 @@ const pool = mysql.createPool({
 app.use(express.json());
 app.use(express.static("./frontend/dist"));
 app.use(cors());
-app.use((req, res, next) => {
-  /**
-   * Set CORS headers for all routes.
-   */
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
+
 /**
  * GET request endpoint for fetching a list of tables from the database.
  * @param {Object} req - Express request object.
@@ -91,7 +83,6 @@ app.get("/api/:table/:id", (req, res) => {
  * @returns {Object} - JSON response indicating success or failure.
  */
 app.post("/api/:table", (req, res) => {
-
   const table = req.params.table;
   const { eng_word, fi_word } = req.body;
   const sql = `INSERT INTO ${table} (eng_word, fi_word) VALUES (?, ?)`;
@@ -99,9 +90,7 @@ app.post("/api/:table", (req, res) => {
   pool.query(sql, [eng_word, fi_word], (error, results) => {
     if (error) {
       console.error("Error inserting data:", error);
-      return res
-        .status(404)
-        .json({ message: `No result for ${table}` });
+      return res.status(404).json({ message: `No result for ${table}` });
     } else {
       return res
         .status(201)
@@ -119,7 +108,6 @@ app.post("/api/:table", (req, res) => {
  * @returns {Object} - JSON response indicating success or failure.
  */
 app.put("/api/:table/:id", (req, res) => {
-
   const table = req.params.table;
   const id = req.params.id;
   const { eng_word, fi_word } = req.body;
@@ -128,7 +116,9 @@ app.put("/api/:table/:id", (req, res) => {
   pool.query(sql, [eng_word, fi_word, id], (error, results) => {
     if (error) {
       console.error("Error inserting data:", error);
-      return res.status(404).json({ message: `No result for ${table} id ${id}` });
+      return res
+        .status(404)
+        .json({ message: `No result for ${table} id ${id}` });
     } else {
       return res
         .status(200)
@@ -143,7 +133,6 @@ app.put("/api/:table/:id", (req, res) => {
  * @returns {Object} - JSON response indicating success or failure.
  */
 app.delete("/api/:table/:id", (req, res) => {
-
   const table = req.params.table;
   const id = req.params.id;
 
@@ -175,5 +164,3 @@ if (pool) {
   console.error("Error connecting to MySQL:", err);
   process.exit(1);
 }
-
-
