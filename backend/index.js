@@ -43,7 +43,7 @@ app.get("/api", (req, res) => {
       console.error("Error fetching data:", error);
       res.status(404).json({ error: "Not found." });
     } else {
-      res.status(200).json("Data fetched successfully ", results);
+      res.status(200).json(results);
     }
   });
 });
@@ -59,7 +59,7 @@ app.get("/api/:table", (req, res) => {
       console.error("Error fetching data:", error);
       res.status(404).json({ message: `No result for table ${table}` });
     } else {
-      res.status(200).json("Data fetched successfully ", results);
+      res.status(200).json(results);
     }
   });
 });
@@ -78,7 +78,7 @@ app.get("/api/:table/:id", (req, res) => {
       console.error(`Error fetching data with id ${id}:`, error);
       res.status(404).json({ message: `No result for ${table} id ${id}` });
     } else {
-      res.status(200).json("Data fetched successfully ", results);
+      res.status(200).json(results);
     }
   });
 });
