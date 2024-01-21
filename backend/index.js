@@ -61,7 +61,7 @@ app.get("/api", (req, res) => {
  * @param {string} req.params.table - The name of the table.
  * @returns {Object} - JSON response containing the fetched data.
  */
-app.get("/api/:table", (req, res) => {
+app.get("/:table", (req, res) => {
   const table = req.params.table;
   pool.query(`SELECT * FROM ${table}`, (error, results) => {
     if (error) {
@@ -78,7 +78,7 @@ app.get("/api/:table", (req, res) => {
  * @param {string} req.params.id - The ID of the data to fetch.
  * @returns {Object} - JSON response containing the fetched record.
  */
-app.get("/api/:table/:id", (req, res) => {
+app.get("/:table/:id", (req, res) => {
   const table = req.params.table;
   const id = req.params.id;
 
