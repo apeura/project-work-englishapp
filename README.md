@@ -33,7 +33,7 @@ Docker:
 docker-compose build
 docker-compose up -d
 ```
-Intall and start workspaces:
+Install and start workspaces:
 ```
 npm install
 npm run start
@@ -41,6 +41,7 @@ npm run start
 Access site on given localhost address, backend runs at http://localhost:8080/api/[...]
 
 # Running, API
+##### Problems detected
 The application is running at https://learn-english-2qxb.onrender.com/
 
 ## Credits
