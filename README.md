@@ -31,10 +31,11 @@ cd project-work-englishapp
 Docker:
 ```
 docker-compose build
-docker-compose up
+docker-compose up -d
 ```
-Start workspaces:
+Intall and start workspaces:
 ```
+npm install
 npm run start
 ```
 Access site on given localhost address, backend runs at http://localhost:8080/api/[...]
