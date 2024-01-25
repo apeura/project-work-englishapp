@@ -22,7 +22,22 @@ Five different topics to choose from.
 Surprise me! -button for a random challenge.
 
 ## Installation
-No installation needed.
+
+Clone github repository:
+```
+git clone https://github.com/apeura/project-work-englishapp
+cd project-work-englishapp
+```
+Docker:
+```
+docker-compose build
+docker-compose up
+```
+Start workspaces:
+```
+npm run start
+```
+Access site on given localhost address, backend runs at http://localhost:8080/api/[...]
 
 # Running, API
 The application is running at https://learn-english-2qxb.onrender.com/
