@@ -5,6 +5,7 @@ Learn English! -app is an application meant for studying English - Finnish word 
 This project is a part of **TAMK's Fall 2023 backend module**. The goal of this project is to create a full stack application.
 
 ## Screenshots
+##### PLEASE NOTE: Tuni databases are cleared so demonstrated data won't be available.
 ![play](https://github.com/apeura/project-work-englishapp/assets/113358099/3199cab5-76e4-4a0d-83eb-98fdbf9a0758)
 ![admin](https://github.com/apeura/project-work-englishapp/assets/113358099/342859eb-ee40-4930-a1fb-89bb33284e8f)
 
@@ -21,7 +22,7 @@ Randomly generates tests based on topics for player.
 Five different topics to choose from.
 Surprise me! -button for a random challenge.
 
-## Installation
+## Local installation
 
 Clone github repository:
 ```
@@ -41,7 +42,7 @@ npm run start
 Access site on given localhost address, backend runs at http://localhost:8080/api/[...]
 
 # Running, API
-##### Problems detected
+##### PLEASE NOTE: Tuni databases are cleared so demonstrated data won't be available.
 The application is running at https://learn-english-2qxb.onrender.com/
 
 ## Credits
